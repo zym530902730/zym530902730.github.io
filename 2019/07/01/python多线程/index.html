@@ -8,6 +8,7 @@
 
 
     <meta name="description" content="Python多线程总结multiprocessing.Pool 只是用来启动多个进程而不是在每个core上启动一个进程。换句话说Python解释器本身不会去在每个core或者processor去做负载均衡。这个是由操作系统决定的。如果你的工作特别的计算密集型的话，操作系统确实会分配更多的core，但这也不是Python或者代码所能控制的或指定的。multiprocessing.Pool(num)中">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python多线程">
 <meta property="og:url" content="http://yoursite.com/2019/07/01/python多线程/index.html">
@@ -15,7 +16,7 @@
 <meta property="og:description" content="Python多线程总结multiprocessing.Pool 只是用来启动多个进程而不是在每个core上启动一个进程。换句话说Python解释器本身不会去在每个core或者processor去做负载均衡。这个是由操作系统决定的。如果你的工作特别的计算密集型的话，操作系统确实会分配更多的core，但这也不是Python或者代码所能控制的或指定的。multiprocessing.Pool(num)中">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-07-01T13:40:32.199Z">
+<meta property="og:updated_time" content="2019-07-01T14:04:54.364Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python多线程">
 <meta name="twitter:description" content="Python多线程总结multiprocessing.Pool 只是用来启动多个进程而不是在每个core上启动一个进程。换句话说Python解释器本身不会去在每个core或者processor去做负载均衡。这个是由操作系统决定的。如果你的工作特别的计算密集型的话，操作系统确实会分配更多的core，但这也不是Python或者代码所能控制的或指定的。multiprocessing.Pool(num)中">
@@ -82,6 +83,10 @@
 
     
     
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
     
 
 
@@ -154,6 +159,11 @@
                 </span>
                 
                 
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
             </div>
         </div>
         
@@ -168,14 +178,20 @@
 <h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>作为脚本运行时，首先添加 if__name__==”<strong>main</strong>“
 在Windows下运行时，需要添加freeze_support()<br>multiprocessing根据平台不同会执行不同的代码：在类UNIX系统下由于操作系统本身支持fork()语句，win32系统由于本身不支持fork()，因此在两种系统下multiprocessing会运行不同的代码。</p>
 <hr>
-<p>(```)<br>from multiprocessing import Pool<br> import os, time, random<br>def long_time_task(name):     #执行函数<br>         print(‘run task %s (%s)…’% (name,os.getpid()))<br>         start = time.time()<br>         time.sleep(random.random()*3)       #random()生成0-1之间的随即实数<br>         end = time.time()<br>         print(‘task %s run %0.2f seconds.’% (name,end-start))</p>
-<p> if <strong>name</strong> ==’<strong>main</strong>‘:<br>         print(‘parents process %s.’% os.getpid())<br>         p = Pool(4)                                         #意为设定同时进行的子进程数,在一个进程池内,根据cpu核数进行的.<br>         for i in range(8):                                 #为8个进程提供name 0,1,2,3,4,5,6,7<br>                 p.apply_async(long_time_task, args = (i,))       #apply_async()方法下面说明<br>         print(‘waiting for all subprocesses done…’)<br>         p.close()                                              #关闭进程池,不在接收新的任务<br>         p.join()<br>         print(‘all subprocesses done’)</p>
-<p>#apply_async(func[,args[,kwds[,callback = None]]])    #非阻塞且支持结果返回进行回调</p>
-<p>#apply_async(函数,不定参数)     #四个进程在Pool进程池内并行(分给4核cpu),剩下的交替进行.</p>
-<p>(```)</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from multiprocessing import Pool</span><br><span class="line">import os, time, random</span><br><span class="line">def long_time_task(name):     #执行函数</span><br><span class="line">         print(&apos;run task %s (%s)...&apos;% (name,os.getpid()))    </span><br><span class="line">         start = time.time()                </span><br><span class="line">         time.sleep(random.random()*3)       #random()生成0-1之间的随即实数</span><br><span class="line">         end = time.time()</span><br><span class="line">         print(&apos;task %s run %0.2f seconds.&apos;% (name,end-start))</span><br><span class="line"> </span><br><span class="line"> if __name__ ==&apos;__main__&apos;:     </span><br><span class="line">         print(&apos;parents process %s.&apos;% os.getpid())</span><br><span class="line">         p = Pool(4)                                         #意为设定同时进行的子进程数,在一个进程池内,根据cpu核数进行的.      </span><br><span class="line">         for i in range(8):                                 #为8个进程提供name 0,1,2,3,4,5,6,7</span><br><span class="line">                 p.apply_async(long_time_task, args = (i,))       #apply_async()方法下面说明</span><br><span class="line">         print(&apos;waiting for all subprocesses done...&apos;)</span><br><span class="line">         p.close()                                              #关闭进程池,不在接收新的任务</span><br><span class="line">         p.join()</span><br><span class="line">         print(&apos;all subprocesses done&apos;)</span><br><span class="line"></span><br><span class="line">#apply_async(func[,args[,kwds[,callback = None]]])    #非阻塞且支持结果返回进行回调</span><br><span class="line">#apply_async(函数,不定参数)     #四个进程在Pool进程池内并行(分给4核cpu),剩下的交替进行</span><br></pre></td></tr></table></figure>
+
 <hr>
 <h3 id="if-name-”main“"><a href="#if-name-”main“" class="headerlink" title="if__name__==”main“"></a>if__name__==”<strong>main</strong>“</h3><p>在Python有关<strong>main</strong>的文档中【2】说明“<strong>main</strong>”是代码执行时的最高的命名空间（the name of the scope in which top-level code executes），当代码被当做脚本读入的时候，命名空间会被命名为“<strong>main</strong>”，对于在脚本运行过程中读入的代码命名空间都不会被命名为“<strong>main</strong>”。这也就是说创建的子进程是不会读取<strong>name</strong>==”<strong>main</strong>“保护下的代码。</p>
 
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Python/">Python</a>
+                </div>
+            </div>
         </div>
         
         
@@ -251,22 +267,22 @@
             <div class="level-item has-text-centered">
                 <div>
                     
-                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="Your name">
+                        <img class="image is-128x128 has-mb-6" src="/‘images/crow.png’" alt="Crow">
                     
                     
                     <p class="is-size-4 is-block">
-                        Your name
+                        Crow
                     </p>
                     
                     
                     <p class="is-size-6 is-block">
-                        Your title
+                        研二弱鸡
                     </p>
                     
                     
                     <p class="is-size-6 is-flex is-flex-center has-text-grey">
                         <i class="fas fa-map-marker-alt has-mr-7"></i>
-                        <span>Your location</span>
+                        <span>Qingdao</span>
                     </p>
                     
                 </div>
@@ -296,49 +312,25 @@
             <div class="level-item has-text-centered is-marginless">
                 <div>
                     <p class="heading">
-                        Tags
+                        Tag
                     </p>
                     <p class="title has-text-weight-normal">
-                        0
+                        1
                     </p>
                 </div>
             </div>
         </nav>
         <div class="level">
-            <a class="level-item button is-link is-rounded" href="https://github.com/ppoffice" target="_blank">
+            <a class="level-item button is-link is-rounded" href="https://github.com/zym530902730" target="_blank">
                 Follow</a>
         </div>
         
         
         <div class="level is-mobile">
             
-            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/ppoffice">
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/zym530902730">
                 
                 <i class="fab fa-github"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="https://facebook.com">
-                
-                <i class="fab fa-facebook"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="https://twitter.com">
-                
-                <i class="fab fa-twitter"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Dribbble" href="https://dribbble.com">
-                
-                <i class="fab fa-dribbble"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
-                
-                <i class="fas fa-rss"></i>
                 
             </a>
             
@@ -371,7 +363,7 @@
             </li>
         
             <li>
-                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank">
+                <a class="level is-mobile" href="https://github.com/zym530902730" target="_blank">
                     <span class="level-left">
                         <span class="level-item">PPOffice</span>
                     </span>
@@ -403,6 +395,15 @@
 </div>
     
         
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Tag Cloud
+        </h3>
+        <a href="/tags/Python/" style="font-size: 10px;">Python</a>
+    </div>
+</div>
+
     
     
         <div class="column-right-shadow is-hidden-widescreen ">
@@ -498,6 +499,13 @@
                 Tags
             </h3>
             <div class="field is-grouped is-grouped-multiline">
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
                 
             </div>
         </div>
@@ -607,6 +615,13 @@
             </h3>
             <div class="field is-grouped is-grouped-multiline">
                 
+                <div class="control">
+                    <a class="tags has-addons" href="/tags/Python/">
+                        <span class="tag">Python</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -630,6 +645,11 @@
                 <p class="is-size-7">
                 &copy; 2019 John Doe&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
                 
                 </p>
             </div>
@@ -668,6 +688,8 @@
         </div>
     </div>
 </footer>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
 <script>moment.locale("en");</script>
@@ -761,6 +783,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
     
+    
+
     
 
 
