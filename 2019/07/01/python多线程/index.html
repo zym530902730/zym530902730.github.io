@@ -16,7 +16,7 @@
 <meta property="og:description" content="Python多线程总结multiprocessing.Pool 只是用来启动多个进程而不是在每个core上启动一个进程。换句话说Python解释器本身不会去在每个core或者processor去做负载均衡。这个是由操作系统决定的。如果你的工作特别的计算密集型的话，操作系统确实会分配更多的core，但这也不是Python或者代码所能控制的或指定的。multiprocessing.Pool(num)中">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-07-01T14:04:54.364Z">
+<meta property="og:updated_time" content="2019-07-01T14:06:27.997Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python多线程">
 <meta name="twitter:description" content="Python多线程总结multiprocessing.Pool 只是用来启动多个进程而不是在每个core上启动一个进程。换句话说Python解释器本身不会去在每个core或者processor去做负载均衡。这个是由操作系统决定的。如果你的工作特别的计算密集型的话，操作系统确实会分配更多的core，但这也不是Python或者代码所能控制的或指定的。multiprocessing.Pool(num)中">
@@ -155,7 +155,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    4 minutes read (About 633 words)
+                    4 minutes read (About 631 words)
                 </span>
                 
                 
@@ -181,7 +181,7 @@
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from multiprocessing import Pool</span><br><span class="line">import os, time, random</span><br><span class="line">def long_time_task(name):     #执行函数</span><br><span class="line">         print(&apos;run task %s (%s)...&apos;% (name,os.getpid()))    </span><br><span class="line">         start = time.time()                </span><br><span class="line">         time.sleep(random.random()*3)       #random()生成0-1之间的随即实数</span><br><span class="line">         end = time.time()</span><br><span class="line">         print(&apos;task %s run %0.2f seconds.&apos;% (name,end-start))</span><br><span class="line"> </span><br><span class="line"> if __name__ ==&apos;__main__&apos;:     </span><br><span class="line">         print(&apos;parents process %s.&apos;% os.getpid())</span><br><span class="line">         p = Pool(4)                                         #意为设定同时进行的子进程数,在一个进程池内,根据cpu核数进行的.      </span><br><span class="line">         for i in range(8):                                 #为8个进程提供name 0,1,2,3,4,5,6,7</span><br><span class="line">                 p.apply_async(long_time_task, args = (i,))       #apply_async()方法下面说明</span><br><span class="line">         print(&apos;waiting for all subprocesses done...&apos;)</span><br><span class="line">         p.close()                                              #关闭进程池,不在接收新的任务</span><br><span class="line">         p.join()</span><br><span class="line">         print(&apos;all subprocesses done&apos;)</span><br><span class="line"></span><br><span class="line">#apply_async(func[,args[,kwds[,callback = None]]])    #非阻塞且支持结果返回进行回调</span><br><span class="line">#apply_async(函数,不定参数)     #四个进程在Pool进程池内并行(分给4核cpu),剩下的交替进行</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="if-name-”main“"><a href="#if-name-”main“" class="headerlink" title="if__name__==”main“"></a>if__name__==”<strong>main</strong>“</h3><p>在Python有关<strong>main</strong>的文档中【2】说明“<strong>main</strong>”是代码执行时的最高的命名空间（the name of the scope in which top-level code executes），当代码被当做脚本读入的时候，命名空间会被命名为“<strong>main</strong>”，对于在脚本运行过程中读入的代码命名空间都不会被命名为“<strong>main</strong>”。这也就是说创建的子进程是不会读取<strong>name</strong>==”<strong>main</strong>“保护下的代码。</p>
+<h3 id="if-name-”main“"><a href="#if-name-”main“" class="headerlink" title="if__name__==”main“"></a>if__name__==”<strong>main</strong>“</h3><p>在Python有关<strong>main</strong>的文档中说明“<strong>main</strong>”是代码执行时的最高的命名空间（the name of the scope in which top-level code executes），当代码被当做脚本读入的时候，命名空间会被命名为“<strong>main</strong>”，对于在脚本运行过程中读入的代码命名空间都不会被命名为“<strong>main</strong>”。这也就是说创建的子进程是不会读取<strong>name</strong>==”<strong>main</strong>“保护下的代码。</p>
 
         </div>
         
@@ -292,7 +292,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <div>
                     <p class="heading">
-                        Posts
+                        Articles
                     </p>
                     <p class="title has-text-weight-normal">
                         2
@@ -302,7 +302,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <div>
                     <p class="heading">
-                        Categories
+                        Catégories
                     </p>
                     <p class="title has-text-weight-normal">
                         0
@@ -322,7 +322,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/zym530902730" target="_blank">
-                Follow</a>
+                SUIVRE</a>
         </div>
         
         
@@ -347,7 +347,7 @@
     <div class="card-content">
         <div class="menu">
         <h3 class="menu-label">
-            Links
+            Liens
         </h3>
         <ul class="menu-list">
         
@@ -385,7 +385,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categories
+                Catégories
             </h3>
             <ul class="menu-list">
             
@@ -398,7 +398,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Tag Cloud
+            Nuage de tags
         </h3>
         <a href="/tags/Python/" style="font-size: 10px;">Python</a>
     </div>
@@ -412,7 +412,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recent
+            Récents
         </h3>
         
         <article class="media">
@@ -527,7 +527,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recent
+            Récents
         </h3>
         
         <article class="media">
@@ -806,9 +806,9 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Posts',
+                POSTS: 'Articles',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categories',
+                CATEGORIES: 'Catégories',
                 TAGS: 'Tags',
                 UNTITLED: '(Untitled)',
             },
